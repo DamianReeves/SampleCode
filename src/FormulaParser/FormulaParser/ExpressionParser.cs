@@ -51,9 +51,11 @@ namespace FormulaParser
             from assign in Parse.Char('=')
             from ws in Parse.WhiteSpace.Many()
             from expr in Expr
-            select (Expression)Expression.Assign(
-                Expression.Variable(typeof(decimal), identifier.Single()),
-                expr);
+            let var1 = Expression.Parameter(typeof(decimal), identifier.Single())
+            select Expression.Block(
+                new[] { var1 },
+                (Expression)Expression.Assign(var1, expr)
+                );
 
         static readonly Parser<Expression<Func<decimal>>> Lambda =
             Expr.End().Select(body => Expression.Lambda<Func<decimal>>(body));
