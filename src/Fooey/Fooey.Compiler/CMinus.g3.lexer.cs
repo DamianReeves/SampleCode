@@ -2,5 +2,8 @@
 {
     partial class CMinusLexer
     {
+        public void Test()
+        {
+        }
     }
 }
