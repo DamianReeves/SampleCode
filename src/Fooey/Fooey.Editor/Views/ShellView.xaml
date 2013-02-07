@@ -5,21 +5,55 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
-    xmlns:avalonDock="http://avalondock.codeplex.com"
+    xmlns:avalonDock="http://avalondock.codeplex.com" 
+    xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+    xmlns:controls="clr-namespace:Fooey.Editor.Framework"
     TextOptions.TextFormattingMode="Display"
     mc:Ignorable="d" 
     d:DesignHeight="400" d:DesignWidth="600"
     >   
+    <RibbonWindow.Resources>
+        <avalonDock:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </RibbonWindow.Resources>
     <Grid>
         <DockPanel>
             <Ribbon DockPanel.Dock="Top">
                 <RibbonTab Header="Home">
-                    <RibbonGroup>
+                    <RibbonGroup Header="File">
+                        <RibbonButton x:Name="NewDocument" Label="New" />
+                        <RibbonButton x:Name="OpenDocument" Label="Open" />
+                        
+                    </RibbonGroup>
+                    <RibbonGroup Header="Build">
                         <RibbonButton Label="Parse" />
                     </RibbonGroup>
                 </RibbonTab>
             </Ribbon>
             <avalonDock:DockingManager x:Name="DockingManager" DocumentsSource="{Binding Documents}">
+                <avalonDock:DockingManager.LayoutItemTemplate>
+                    <DataTemplate>
+                        <ContentControl cal:View.Model="{Binding}"
+									IsTabStop="False" />
+                    </DataTemplate>
+                </avalonDock:DockingManager.LayoutItemTemplate>
+                <avalonDock:DockingManager.LayoutItemContainerStyleSelector>
+                    <controls:PanesStyleSelector>
+                        <controls:PanesStyleSelector.DocumentStyle>
+                            <Style TargetType="{x:Type avalonDock:LayoutItem}">
+                                <Setter Property="Title" Value="{Binding Model.DisplayName, Mode=OneWay}" />
+                                <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
+                            </Style>
+                        </controls:PanesStyleSelector.DocumentStyle>
+                        <controls:PanesStyleSelector.ToolStyle>
+                            <Style TargetType="{x:Type avalonDock:LayoutAnchorableItem}">
+                                <Setter Property="Title" Value="{Binding Model.DisplayName, Mode=OneWay}" />
+                                <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
+                                <Setter Property="IconSource" Value="{Binding Model.IconSource}" />
+                                <Setter Property="Visibility" Value="{Binding Model.IsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Hidden}}"/>
+                            </Style>
+                        </controls:PanesStyleSelector.ToolStyle>
+                    </controls:PanesStyleSelector>
+                </avalonDock:DockingManager.LayoutItemContainerStyleSelector>
                 <avalonDock:LayoutRoot>
                     <avalonDock:LayoutPanel Orientation="Vertical">
                         <avalonDock:LayoutDocumentPane/>

@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using Fooey.Editor.Core;
+using Fooey.Editor.Framework;
 
 namespace Fooey.Editor.ViewModels
 {

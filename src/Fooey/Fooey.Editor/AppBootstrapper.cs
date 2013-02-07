@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using Caliburn.Micro;
-using Fooey.Editor.Core;
+using Fooey.Editor.Framework;
 using Fooey.Editor.ViewModels;
 
 namespace Fooey.Editor
